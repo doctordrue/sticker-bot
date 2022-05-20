@@ -6,6 +6,8 @@ services:
       APP_DB_URL: jdbc:postgresql://db:5432/${APP_DB_NAME}
       BOT_USERNAME: ${BOT_USERNAME}
       BOT_TOKEN: ${BOT_TOKEN}
+      APP_DB_USERNAME: ${APP_DB_USERNAME}
+      APP_DB_PASSWORD: ${APP_DB_PASSWORD}
     ports:
       - "5005:5005" # Java Remote debug
     depends_on:
