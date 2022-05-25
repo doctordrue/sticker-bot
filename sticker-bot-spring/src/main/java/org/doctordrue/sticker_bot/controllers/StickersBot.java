@@ -19,6 +19,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
  **/
 @Component
 public class StickersBot extends TelegramLongPollingCommandBot {
+
    @Value("${telegram.bot.username}")
    private String botUsername;
    @Value("${telegram.bot.token}")

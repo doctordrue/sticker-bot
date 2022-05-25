@@ -20,6 +20,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
  **/
 @Component
 public class AddStickerPackCommand extends ManCommand {
+
    private final StickerPackService stickerPackService;
    private final TelegramChatService telegramChatService;
 

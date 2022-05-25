@@ -14,6 +14,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "telegram_chat_settings")
 public class TelegramChatSettings {
+
    private static final Long DEFAULT_REPLY_DURATION_SECONDS = 120L;
    private static final String DEFAULT_STICKER_SET_NAME = "MrPepe";
 

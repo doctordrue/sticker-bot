@@ -19,6 +19,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
  **/
 @Service
 public class StickerPackService {
+
    private static final long MIN_STICKER_CHOOSING_TIME_SECONDS = 2;
    private static final long MAX_STICKER_CHOOSING_TIME_SECONDS = 6;
 
