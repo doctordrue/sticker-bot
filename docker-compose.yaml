@@ -23,22 +23,9 @@ services:
       POSTGRES_PASSWORD: ${APP_DB_PASSWORD}
     restart: always
     volumes:
-      - pg_sharedcosts:/var/lib/postgresql/data
+      - database:/var/lib/postgresql/data
     ports:
       - "5432:5432" # For debug purpose
 
-#  db_new:
-#    image: postgres:alpine
-#    environment:
-#      POSTGRES_DB: ${APP_DB_NAME}
-#      POSTGRES_USER:  ${APP_DB_USERNAME}
-#      POSTGRES_PASSWORD: ${APP_DB_PASSWORD}
-#    restart: always
-#    volumes:
-#      - database:/var/lib/postgresql/data
-#    ports:
-#      - "5432:5432" # For debug purpose
-
 volumes:
   database:
-  pg_sharedcosts:
