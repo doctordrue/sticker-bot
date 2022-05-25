@@ -48,7 +48,8 @@ jobs:
         run: chmod +x sticker-bot-spring/gradlew
        
       - name: Execute Gradle build
-        run: ./sticker-bot-spring/gradlew bootBuildImage --imageName=${{ env.IMAGE_NAME }}
+        run: gradlew bootBuildImage --imageName=${{ env.IMAGE_NAME }}
+        working-directory: ./sticker-bot-spring
 
       - name: Push Docker image to github containers repo
         run: |
