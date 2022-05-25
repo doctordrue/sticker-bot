@@ -38,11 +38,12 @@ jobs:
       uses: gradle/gradle-build-action@v2.1.5
       
     - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+      run: chmod +x sticker-bot-spring/gradlew
       
     - name: Build with Gradle
       uses: gradle/gradle-build-action@0d13054264b0bb894ded474f08ebb30921341cee
       with:
+        build-root-directory: sticker-bot-spring
         arguments: bootBuildImage --
           
     - name: Publish on docker.io
