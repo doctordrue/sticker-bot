@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'org.doctordrue'
-version = 'v1.0-alpha.1'
+version = 'v1.0'
 sourceCompatibility = '17'
 
 repositories {
@@ -35,6 +35,6 @@ tasks.named("bootBuildImage") {
     builder = 'paketobuildpacks/builder:tiny'
     buildpacks = ["gcr.io/paketo-buildpacks/azul-zulu", "gcr.io/paketo-buildpacks/java"]
     environment = [
-            "BPE_APPEND_JAVA_TOOL_OPTIONS": " -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"]
+            "BPE_APPEND_JAVA_TOOL_OPTIONS": " -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"]
     verboseLogging = false
 }

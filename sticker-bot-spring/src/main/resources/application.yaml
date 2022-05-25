@@ -1,0 +1,16 @@
+# Spring Boot settings
+spring:
+  jpa:
+    database: postgresql
+    hibernate.ddl-auto: update
+  datasource:
+    url: ${APP_DB_URL}
+    username: ${APP_DB_USERNAME}
+    password: ${APP_DB_PASSWORD}
+
+# Telegram Bot settings
+telegram:
+  bot:
+    mention.regex: (^[Бб]от([,!\.].*)?$)|(.*,\sбот[?!.]?$)
+    username: ${BOT_USERNAME}
+    token: ${BOT_TOKEN}
