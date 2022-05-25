@@ -1,5 +1,7 @@
 package org.doctordrue.sticker_bot;
 
+import java.util.stream.Collectors;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
