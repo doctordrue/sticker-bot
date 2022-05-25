@@ -14,6 +14,7 @@ import org.doctordrue.sticker_bot.data.entities.TelegramChatSettings;
 import org.doctordrue.sticker_bot.services.StickerPackService;
 import org.doctordrue.sticker_bot.services.TelegramChatService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -36,6 +37,8 @@ public class StickerReplyProcessor extends BaseUpdateProcessor {
    private StickerPackService stickerPackService;
    @Autowired
    private TelegramChatService telegramChatService;
+   @Value("${telegram.bot.mention.regex}")
+   private String botMentionRegex;
 
    @Transactional
    @Override
@@ -61,10 +64,7 @@ public class StickerReplyProcessor extends BaseUpdateProcessor {
 
    protected boolean isMentioned(Message message, String userName) {
       List<Predicate<Message>> conditions = Arrays.asList(
-              m -> m.getText().toLowerCase().startsWith("бот,"),
-              m -> m.getText().toLowerCase().startsWith("бот!"),
-              m -> m.getText().toLowerCase().startsWith("бот."),
-              m -> m.getText().equalsIgnoreCase("бот"),
+              m -> m.getText().matches(botMentionRegex),
               m -> m.hasEntities() && m.getEntities().stream()
                       .filter(e -> "mention".equals(e.getType()))
                       .anyMatch(e -> e.getText().contains("@" + userName)));

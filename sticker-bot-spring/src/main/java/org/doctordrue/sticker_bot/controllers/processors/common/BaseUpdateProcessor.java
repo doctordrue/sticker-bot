@@ -10,6 +10,7 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
  * 5/11/2022
  **/
 public abstract class BaseUpdateProcessor {
+
    private Supplier<String> botUsernameSupplier;
 
    public abstract void execute(AbsSender absSender, Update update);
@@ -17,6 +18,7 @@ public abstract class BaseUpdateProcessor {
    public void setBotUsernameSupplier(Supplier<String> botUsernameSupplier) {
       this.botUsernameSupplier = botUsernameSupplier;
    }
+
    protected String getBotUsername() {
       return this.botUsernameSupplier.get();
    }

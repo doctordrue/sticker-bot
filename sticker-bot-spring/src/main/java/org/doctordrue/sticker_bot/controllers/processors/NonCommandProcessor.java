@@ -17,9 +17,8 @@ public class NonCommandProcessor {
    private final List<BaseUpdateProcessor> processors;
    private final Supplier<String> botUsernameSupplier;
 
-
    public NonCommandProcessor(Supplier<String> botUsernameSupplier) {
-      this.processors =  new LinkedList<>();
+      this.processors = new LinkedList<>();
       this.botUsernameSupplier = botUsernameSupplier;
    }
 

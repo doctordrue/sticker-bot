@@ -17,6 +17,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
  **/
 @Component
 public class StartCommand extends ManCommand {
+
    private final TelegramChatService telegramChatService;
 
    public StartCommand(TelegramChatService telegramChatService) {
@@ -40,13 +41,13 @@ public class StartCommand extends ManCommand {
 
    public void execute(AbsSender absSender, Integer messageId, Chat chat) {
       SendMessage.SendMessageBuilder builder = SendMessage.builder().chatId(chat.getId().toString()).disableNotification(true);
-         TelegramChatSettings settings = this.telegramChatService.getOrCreate(chat.getId());
-         String chatName = chat.getTitle();
-         String description = chat.getDescription();
-         this.telegramChatService.update(settings);
-         builder.text("Бот инициализирован, настройки чата сохранены в базе данных\n" +
-                 "timeout = " + settings.getReplyDuration().getSeconds() + " секунд\n" +
-                 "stickerpacks = " + settings.getStickerSetNames().toString());
+      TelegramChatSettings settings = this.telegramChatService.getOrCreate(chat.getId());
+      String chatName = chat.getTitle();
+      String description = chat.getDescription();
+      this.telegramChatService.update(settings);
+      builder.text("Бот инициализирован, настройки чата сохранены в базе данных\n" +
+              "timeout = " + settings.getReplyDuration().getSeconds() + " секунд\n" +
+              "stickerpacks = " + settings.getStickerSetNames().toString());
       try {
          absSender.execute(builder.build());
       } catch (TelegramApiException e) {
