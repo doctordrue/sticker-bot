@@ -1,0 +1,41 @@
+plugins {
+	id 'org.springframework.boot' version '2.7.0'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+group = 'org.doctordrue'
+version = 'v1.0-alpha.1'
+sourceCompatibility = '17'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.7.0'
+	implementation 'org.springframework.boot:spring-boot-starter-web:2.7.0'
+    implementation 'org.telegram:telegrambots-spring-boot-starter:6.0.1'
+    implementation 'org.telegram:telegrambotsextensions:6.0.1'
+	runtimeOnly 'org.postgresql:postgresql:42.3.5'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.0'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+tasks.named("bootBuildImage") {
+    imageName = "doctordrue/${project.name}"
+    tags = [
+            "docker.io/doctordrue/${project.name}:latest",
+            "docker.io/doctordrue/${project.name}:${project.version}",
+            "ghcr.io/doctordrue/${project.name}:latest",
+            "ghcr.io/doctordrue/${project.name}:${project.version}"]
+    pullPolicy = "IF_NOT_PRESENT"
+    builder = 'paketobuildpacks/builder:tiny'
+    buildpacks = ["gcr.io/paketo-buildpacks/azul-zulu", "gcr.io/paketo-buildpacks/java"]
+    environment = [
+            "BPE_APPEND_JAVA_TOOL_OPTIONS": " -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"]
+    verboseLogging = false
+}
