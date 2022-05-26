@@ -11,6 +11,12 @@ spring:
 # Telegram Bot settings
 telegram:
   bot:
-    mention.regex: (^[Бб]от([,!\.].*)?$)|(.*,\sбот[?!.]?$)
+    mention:
+      regex: (^[Бб]от([,!\.].*)?$)|(.*,\sбот[?!.]?$)
+      cooldown:
+        timeout_ms: 20000
+        max_messages_in_timeout_allowed: 2
+        duration_sec: 300
+
     username: ${BOT_USERNAME}
     token: ${BOT_TOKEN}

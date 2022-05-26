@@ -1,5 +1,7 @@
 package org.doctordrue.sticker_bot.controllers;
 
+import java.util.List;
+
 import org.doctordrue.sticker_bot.controllers.commands.StartCommand;
 import org.doctordrue.sticker_bot.controllers.commands.stickers.AddStickerPackCommand;
 import org.doctordrue.sticker_bot.controllers.commands.stickers.SetTimeoutCommand;
@@ -7,6 +9,7 @@ import org.doctordrue.sticker_bot.controllers.commands.stickers.StickerPackComma
 import org.doctordrue.sticker_bot.controllers.commands.stickers.StickerPacksCommand;
 import org.doctordrue.sticker_bot.controllers.processors.NonCommandProcessor;
 import org.doctordrue.sticker_bot.controllers.processors.stickers.StickerReplyProcessor;
+import org.doctordrue.sticker_bot.exceptions.BaseBotException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -69,5 +72,16 @@ public class StickersBot extends TelegramLongPollingCommandBot {
       this.register(stickerPackCommand);
       this.register(stickerPacksCommand);
       this.nonCommandProcessor.register(stickerReplyProcessor);
+   }
+
+   @Override
+   public void onUpdatesReceived(List<Update> updates) {
+      for (Update update : updates) {
+         try {
+            this.onUpdateReceived(update);
+         } catch (BaseBotException e) {
+            e.sendReplyMessageIfNeeded(this);
+         }
+      }
    }
 }
