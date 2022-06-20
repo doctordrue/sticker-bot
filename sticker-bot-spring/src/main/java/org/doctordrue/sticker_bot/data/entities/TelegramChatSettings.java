@@ -60,6 +60,10 @@ public class TelegramChatSettings {
       return this;
    }
 
+   public boolean removeStickerSet(String stickerSetName) {
+      return this.stickerSetNames.remove(stickerSetName);
+   }
+
    public static TelegramChatSettings createDefault(Long chatId) {
       return new TelegramChatSettings().setChatId(chatId)
               .setReplyDuration(Duration.ofSeconds(DEFAULT_REPLY_DURATION_SECONDS))

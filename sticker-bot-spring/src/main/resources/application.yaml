@@ -11,6 +11,9 @@ spring:
 # Telegram Bot settings
 telegram:
   bot:
+    stickerpack:
+      cannot_be_removed:
+        regex: ${REMOVE_REGEX}
     mention:
       regex: (^[Бб]от([,!\.].*)?$)|(.*,\sбот[?!.]?$)
       cooldown:

@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.doctordrue.sticker_bot.services.StickerPackService;
 import org.doctordrue.sticker_bot.services.TelegramChatService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.helpCommand.ManCommand;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -16,21 +17,24 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 /**
  * @author Andrey_Barantsev
- * 5/13/2022
+ * 6/20/2022
  **/
 @Component
-public class AddStickerPackCommand extends ManCommand {
+public class RemoveStickerPackCommand extends ManCommand {
 
    private final StickerPackService stickerPackService;
    private final TelegramChatService telegramChatService;
 
-   public AddStickerPackCommand(StickerPackService stickerPackService, TelegramChatService telegramChatService) {
+   @Value("${telegram.bot.stickerpack.cannot_be_removed.regex}")
+   private String notRemovableRegex;
+
+   public RemoveStickerPackCommand(StickerPackService stickerPackService, TelegramChatService telegramChatService) {
       super(
-              "addstickerpack",
-              "Добавляет стикер-пак в набор возможных для ответа стикеров",
+              "/remove",
+              "Удаляет стикеры из стикер-пака из набора возможных для ответа стикеров",
               "Формат:\n" +
-                      "/addstickerpack &lt;название стикерпака&gt; - для получения названия стикерпака можно послать команду /stickerpack в ответ на сообщение с понравившимся стикером\n" +
-                      "/addstickerpack - послать в ответ на сообщение со стикером - добавить в сет стикерпак с этим стикером");
+                      "/remove &lt;название стикерпака&gt; - для получения названия стикерпака можно послать команду /stickerpack в ответ на сообщение с понравившимся стикером\n" +
+                      "/remove - послать в ответ на сообщение со стикером - удалить из набора стикерпак с этим стикером");
       this.stickerPackService = stickerPackService;
       this.telegramChatService = telegramChatService;
    }
@@ -50,8 +54,16 @@ public class AddStickerPackCommand extends ManCommand {
          maybeSetName = getStickerSet(absSender, arguments[0]).map(StickerSet::getName);
       }
       if (maybeSetName.isPresent()) {
-         this.telegramChatService.addStickerSet(message.getChatId(), maybeSetName.get());
-         builder.text("Стикер сет " + maybeSetName.get() + " добавлен в чат");
+         if (maybeSetName.get().matches(notRemovableRegex)) {
+            // Easter egg ;)
+            builder.text("Нельзя удалить " + maybeSetName.get() + "!");
+         } else {
+            if (this.telegramChatService.removeStickerSet(message.getChatId(), maybeSetName.get())) {
+               builder.text("Стикер сет " + maybeSetName.get() + " удален");
+            } else {
+               builder.text("Стикер сет " + maybeSetName.get() + " не найден в настройках чата");
+            }
+         }
       } else {
          if (arguments.length > 0) {
             builder.text("Стикер сет '" + arguments[0] + "' не найден");
