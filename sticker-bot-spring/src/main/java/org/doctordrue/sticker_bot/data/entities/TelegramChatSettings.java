@@ -28,6 +28,28 @@ public class TelegramChatSettings {
    @Column(name = "reply_duration")
    private Duration replyDuration = Duration.ofSeconds(DEFAULT_REPLY_DURATION_SECONDS);
 
+   @Column(name = "remove_tries")
+   private Integer removeTries;
+
+   public Integer getRemoveTries() {
+      return removeTries == null ? 0 : removeTries;
+   }
+
+   public TelegramChatSettings setRemoveTries(Integer removeTries) {
+      this.removeTries = removeTries;
+      return this;
+   }
+
+   public TelegramChatSettings increaseRemoveTries() {
+      this.setRemoveTries(getRemoveTries() + 1);
+      return this;
+   }
+
+   public TelegramChatSettings resetRemoveTries() {
+      this.removeTries = 0;
+      return this;
+   }
+
    public Long getChatId() {
       return chatId;
    }
@@ -67,6 +89,7 @@ public class TelegramChatSettings {
    public static TelegramChatSettings createDefault(Long chatId) {
       return new TelegramChatSettings().setChatId(chatId)
               .setReplyDuration(Duration.ofSeconds(DEFAULT_REPLY_DURATION_SECONDS))
+              .setRemoveTries(0)
               .addStickerSet(DEFAULT_STICKER_SET_NAME);
    }
 }

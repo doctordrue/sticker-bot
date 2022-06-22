@@ -2,6 +2,7 @@ package org.doctordrue.sticker_bot.controllers.commands.stickers;
 
 import java.util.Optional;
 
+import org.doctordrue.sticker_bot.data.entities.TelegramChatSettings;
 import org.doctordrue.sticker_bot.services.StickerPackService;
 import org.doctordrue.sticker_bot.services.TelegramChatService;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +23,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Component
 public class RemoveStickerPackCommand extends ManCommand {
 
+   private static final int RETRIES_REMOVE_COUNT = 4;
    private final StickerPackService stickerPackService;
    private final TelegramChatService telegramChatService;
 
@@ -54,9 +56,18 @@ public class RemoveStickerPackCommand extends ManCommand {
          maybeSetName = getStickerSet(absSender, arguments[0]).map(StickerSet::getName);
       }
       if (maybeSetName.isPresent()) {
+         TelegramChatSettings settings = this.telegramChatService.getOrCreate(message.getChatId());
          if (maybeSetName.get().matches(notRemovableRegex)) {
             // Easter egg ;)
-            builder.text("Нельзя удалить " + maybeSetName.get() + "!");
+            if (settings.getRemoveTries() < RETRIES_REMOVE_COUNT) {
+               builder.text("Нельзя удалить " + maybeSetName.get() + "!");
+               this.telegramChatService.update(settings.increaseRemoveTries());
+            } else if (this.telegramChatService.removeStickerSet(message.getChatId(), maybeSetName.get())) {
+               builder.text("А ты настойчивый! " + maybeSetName.get() + " удален, но я сообщил куда следует!");
+               this.telegramChatService.update(settings.resetRemoveTries());
+            } else {
+               builder.text("Стикер сет " + maybeSetName.get() + " не найден в настройках чата");
+            }
          } else {
             if (this.telegramChatService.removeStickerSet(message.getChatId(), maybeSetName.get())) {
                builder.text("Стикер сет " + maybeSetName.get() + " удален");
