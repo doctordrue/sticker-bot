@@ -15,7 +15,7 @@ telegram:
       cannot_be_removed:
         regex: ${REMOVE_REGEX}
     mention:
-      regex: (^[Бб]от([,!\.].*)?$)|(.*,\sбот[?!.]?$)
+      regex: (^(.*\.\s)?[Бб]от(([,!\.]|(\sи\s)).*)?$)|(.*,\sбот[?!.]?$)|(.+,\sбот,.+)
       cooldown:
         timeout_ms: 20000
         max_messages_in_timeout_allowed: 2
