@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.doctordrue.sticker_bot.controllers.commands.StartCommand;
 import org.doctordrue.sticker_bot.controllers.commands.stickers.AddStickerPackCommand;
+import org.doctordrue.sticker_bot.controllers.commands.stickers.RemoveStickerPackCommand;
 import org.doctordrue.sticker_bot.controllers.commands.stickers.SetTimeoutCommand;
 import org.doctordrue.sticker_bot.controllers.commands.stickers.StickerPackCommand;
 import org.doctordrue.sticker_bot.controllers.commands.stickers.StickerPacksCommand;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
+import org.telegram.telegrambots.extensions.bots.commandbot.commands.helpCommand.HelpCommand;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 /**
@@ -31,6 +33,8 @@ public class StickersBot extends TelegramLongPollingCommandBot {
    @Autowired
    private StartCommand startCommand;
    @Autowired
+   private HelpCommand helpCommand;
+   @Autowired
    private SetTimeoutCommand setTimeoutCommand;
    @Autowired
    private AddStickerPackCommand addStickerPackCommand;
@@ -38,6 +42,8 @@ public class StickersBot extends TelegramLongPollingCommandBot {
    private StickerPackCommand stickerPackCommand;
    @Autowired
    private StickerPacksCommand stickerPacksCommand;
+   @Autowired
+   private RemoveStickerPackCommand removeStickerPackCommand;
 
    @Autowired
    private StickerReplyProcessor stickerReplyProcessor;
@@ -67,10 +73,12 @@ public class StickersBot extends TelegramLongPollingCommandBot {
    @Override
    public void onRegister() {
       this.register(startCommand);
+      this.register(helpCommand);
       this.register(setTimeoutCommand);
       this.register(addStickerPackCommand);
       this.register(stickerPackCommand);
       this.register(stickerPacksCommand);
+      this.register(removeStickerPackCommand);
       this.nonCommandProcessor.register(stickerReplyProcessor);
    }
 

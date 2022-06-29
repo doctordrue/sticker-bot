@@ -34,6 +34,15 @@ public class TelegramChatService {
       return this.telegramChatSettingsRepository.save(persistedSettings);
    }
 
+   public boolean removeStickerSet(Long chatId, String stickerSetName) {
+      TelegramChatSettings persistedSettings = this.getOrCreate(chatId);
+      if (persistedSettings.removeStickerSet(stickerSetName)) {
+         this.telegramChatSettingsRepository.save(persistedSettings);
+         return true;
+      }
+      return false;
+   }
+
    public String getRandomStickerSetName(Long chatId) {
       final Set<String> stickerSetNames = this.getOrCreate(chatId).getStickerSetNames();
       return stickerSetNames.stream().skip(new Random().nextInt(stickerSetNames.size())).findAny().orElse(null);
