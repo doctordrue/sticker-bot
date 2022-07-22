@@ -6,7 +6,8 @@ plugins {
 
 group = 'org.doctordrue'
 version = 'v1.0'
-sourceCompatibility = '17'
+sourceCompatibility = '11'
+targetCompatibility = '11'
 
 repositories {
     mavenCentral()
@@ -16,7 +17,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.7.0'
     implementation 'org.telegram:telegrambots-spring-boot-starter:6.0.1'
     implementation 'org.telegram:telegrambotsextensions:6.0.1'
-    runtimeOnly 'org.postgresql:postgresql:42.3.5'
+    runtimeOnly 'org.postgresql:postgresql:42.3.6'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.0'
 }
 
@@ -37,4 +38,8 @@ tasks.named("bootBuildImage") {
     environment = [
             "BPE_APPEND_JAVA_TOOL_OPTIONS": " -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"]
     verboseLogging = false
+}
+
+tasks.named('bootJar') {
+    launchScript()
 }
