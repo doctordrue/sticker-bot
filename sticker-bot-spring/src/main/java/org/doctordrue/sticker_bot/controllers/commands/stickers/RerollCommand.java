@@ -2,7 +2,6 @@ package org.doctordrue.sticker_bot.controllers.commands.stickers;
 
 import org.doctordrue.sticker_bot.services.StickerPackService;
 import org.doctordrue.sticker_bot.services.TelegramChatService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -18,21 +17,16 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Component
 public class RerollCommand extends BotCommand {
 
-    @Autowired
-    private TelegramChatService telegramChatService;
 
-    @Autowired
-    private StickerPackService stickerPackService;
+    private final TelegramChatService telegramChatService;
 
-    /**
-     * Construct a command
-     *
-     * @param commandIdentifier the unique identifier of this command (e.g. the command string to
-     *                          enter into chat)
-     * @param description       the description of this command
-     */
-    public RerollCommand(String commandIdentifier, String description) {
+
+    private final StickerPackService stickerPackService;
+
+    public RerollCommand(TelegramChatService telegramChatService, StickerPackService stickerPackService) {
         super("reroll", "Обновляет последнее сообщение бота новым стикером");
+        this.telegramChatService = telegramChatService;
+        this.stickerPackService = stickerPackService;
     }
 
     @Override
