@@ -16,36 +16,36 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Component
 public class SetTimeoutCommand extends BotCommand {
 
-   private final TelegramChatService telegramChatService;
+    private final TelegramChatService telegramChatService;
 
-   public SetTimeoutCommand(TelegramChatService telegramChatService) {
-      super("timeout", "Установить таймаут (в секундах) для отправки ботом рандомных стикеров");
-      this.telegramChatService = telegramChatService;
-   }
+    public SetTimeoutCommand(TelegramChatService telegramChatService) {
+        super("timeout", "Установить таймаут (в секундах) для отправки ботом рандомных стикеров");
+        this.telegramChatService = telegramChatService;
+    }
 
-   @Override
-   public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
-      StringBuilder sb = new StringBuilder();
-      SendMessage.SendMessageBuilder builder = SendMessage.builder().chatId(chat.getId().toString());
-      if (arguments.length == 0) {
-         long timeoutSeconds = this.telegramChatService.getOrCreate(chat.getId()).getReplyDuration().getSeconds();
-         sb.append("Текущий таймаут ответа стикером:").append(timeoutSeconds)
-                 .append("\nЧто бы задать новый таймаут добавьте параметр таймаута в секундах.")
-                 .append("\nПример (для установки таймаута 2 минуты): /timeout 120");
-      } else {
-         try {
-            Long duration = Long.parseLong(arguments[0]);
-            this.telegramChatService.setTimeout(chat.getId(), duration);
-            sb.append("Таймаут ответа стикером успешно изменен. Новое значение: ").append(duration).append(" секунд");
-         } catch (NumberFormatException e) {
-            sb.append("Некорректное значение таймаута:").append(arguments[0]).append(". Пример (для установки таймаута 2 минуты): /timeout 120");
-         }
-      }
-      builder.text(sb.toString());
-      try {
-         absSender.execute(builder.build());
-      } catch (TelegramApiException e) {
-         throw new RuntimeException(e);
-      }
-   }
+    @Override
+    public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
+        StringBuilder sb = new StringBuilder();
+        SendMessage.SendMessageBuilder builder = SendMessage.builder().chatId(chat.getId().toString());
+        if (arguments.length == 0) {
+            long timeoutSeconds = this.telegramChatService.getOrCreate(chat.getId()).getReplyDuration().getSeconds();
+            sb.append("Текущий таймаут ответа стикером:").append(timeoutSeconds)
+                    .append("\nЧто бы задать новый таймаут добавьте параметр таймаута в секундах.")
+                    .append("\nПример (для установки таймаута 2 минуты): /timeout 120");
+        } else {
+            try {
+                Long duration = Long.parseLong(arguments[0]);
+                this.telegramChatService.setTimeout(chat.getId(), duration);
+                sb.append("Таймаут ответа стикером успешно изменен. Новое значение: ").append(duration).append(" секунд");
+            } catch (NumberFormatException e) {
+                sb.append("Некорректное значение таймаута:").append(arguments[0]).append(". Пример (для установки таймаута 2 минуты): /timeout 120");
+            }
+        }
+        builder.text(sb.toString());
+        try {
+            absSender.execute(builder.build());
+        } catch (TelegramApiException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

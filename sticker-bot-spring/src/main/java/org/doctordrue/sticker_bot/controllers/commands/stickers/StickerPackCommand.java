@@ -16,28 +16,28 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Component
 public class StickerPackCommand extends BotCommand {
 
-   public StickerPackCommand() {
-      super("stickerpack", "Узнать название стикерпака");
-   }
+    public StickerPackCommand() {
+        super("stickerpack", "Узнать название стикерпака");
+    }
 
-   @Override
-   public void processMessage(AbsSender absSender, Message message, String[] arguments) {
-      SendMessage.SendMessageBuilder builder = SendMessage.builder().chatId(message.getChatId().toString());
-      if (message.isReply() && message.getReplyToMessage().hasSticker()) {
-         String setName = message.getReplyToMessage().getSticker().getSetName();
-         builder.text(setName);
-      } else {
-         builder.text("Нужно послать команду ответом на сообщение со стикером");
-      }
-      try {
-         absSender.execute(builder.build());
-      } catch (TelegramApiException e) {
-         throw new RuntimeException(e);
-      }
-   }
+    @Override
+    public void processMessage(AbsSender absSender, Message message, String[] arguments) {
+        SendMessage.SendMessageBuilder builder = SendMessage.builder().chatId(message.getChatId().toString());
+        if (message.isReply() && message.getReplyToMessage().hasSticker()) {
+            String setName = message.getReplyToMessage().getSticker().getSetName();
+            builder.text(setName);
+        } else {
+            builder.text("Нужно послать команду ответом на сообщение со стикером");
+        }
+        try {
+            absSender.execute(builder.build());
+        } catch (TelegramApiException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-   @Override
-   public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
+    @Override
+    public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
 
-   }
+    }
 }

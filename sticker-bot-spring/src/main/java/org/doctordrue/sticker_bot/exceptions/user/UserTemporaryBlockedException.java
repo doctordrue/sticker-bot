@@ -11,22 +11,22 @@ import org.telegram.telegrambots.meta.api.objects.User;
  **/
 public class UserTemporaryBlockedException extends BaseBotException {
 
-   private static final String ERROR_USER_BLOCKED_TEMPLATE = "[%s](tg://user?id=%s)\\, утомил\\. Не буду тебе отвечать";
+    private static final String ERROR_USER_BLOCKED_TEMPLATE = "[%s](tg://user?id=%s)\\, утомил\\. Не буду тебе отвечать";
 
-   private final User user;
-   private final Message causeMessage;
+    private final User user;
+    private final Message causeMessage;
 
-   public UserTemporaryBlockedException(Message message, boolean isReplyNeeded) {
-      super(message.getChat(), isReplyNeeded);
-      this.user = message.getFrom();
-      this.causeMessage = message;
-   }
+    public UserTemporaryBlockedException(Message message, boolean isReplyNeeded) {
+        super(message.getChat(), isReplyNeeded);
+        this.user = message.getFrom();
+        this.causeMessage = message;
+    }
 
-   @Override
-   protected SendMessage getReplyMessage() {
-      return getBuilder()
-              .text(String.format(ERROR_USER_BLOCKED_TEMPLATE, this.user.getFirstName(), this.user.getId()))
-              .replyToMessageId(causeMessage.getMessageId())
-              .build();
-   }
+    @Override
+    protected SendMessage getReplyMessage() {
+        return getBuilder()
+                .text(String.format(ERROR_USER_BLOCKED_TEMPLATE, this.user.getFirstName(), this.user.getId()))
+                .replyToMessageId(causeMessage.getMessageId())
+                .build();
+    }
 }

@@ -18,40 +18,40 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Component
 public class StartCommand extends ManCommand {
 
-   private final TelegramChatService telegramChatService;
+    private final TelegramChatService telegramChatService;
 
-   public StartCommand(TelegramChatService telegramChatService) {
-      super(
-              "start",
-              "Инициализирует бота в новом чате",
-              "Формат:\n" +
-                      "/start");
-      this.telegramChatService = telegramChatService;
-   }
+    public StartCommand(TelegramChatService telegramChatService) {
+        super(
+                "start",
+                "Инициализирует бота в новом чате",
+                "Формат:\n" +
+                        "/start");
+        this.telegramChatService = telegramChatService;
+    }
 
-   @Override
-   public void processMessage(AbsSender absSender, Message message, String[] arguments) {
-      this.execute(absSender, message.getMessageId(), message.getChat());
-   }
+    @Override
+    public void processMessage(AbsSender absSender, Message message, String[] arguments) {
+        this.execute(absSender, message.getMessageId(), message.getChat());
+    }
 
-   @Override
-   public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
+    @Override
+    public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
 
-   }
+    }
 
-   public void execute(AbsSender absSender, Integer messageId, Chat chat) {
-      SendMessage.SendMessageBuilder builder = SendMessage.builder().chatId(chat.getId().toString()).disableNotification(true);
-      TelegramChatSettings settings = this.telegramChatService.getOrCreate(chat.getId());
-      String chatName = chat.getTitle();
-      String description = chat.getDescription();
-      this.telegramChatService.update(settings);
-      builder.text("Бот инициализирован, настройки чата сохранены в базе данных\n" +
-              "timeout = " + settings.getReplyDuration().getSeconds() + " секунд\n" +
-              "stickerpacks = " + settings.getStickerSetNames().toString());
-      try {
-         absSender.execute(builder.build());
-      } catch (TelegramApiException e) {
-         e.printStackTrace();
-      }
-   }
+    public void execute(AbsSender absSender, Integer messageId, Chat chat) {
+        SendMessage.SendMessageBuilder builder = SendMessage.builder().chatId(chat.getId().toString()).disableNotification(true);
+        TelegramChatSettings settings = this.telegramChatService.getOrCreate(chat.getId());
+        String chatName = chat.getTitle();
+        String description = chat.getDescription();
+        this.telegramChatService.update(settings);
+        builder.text("Бот инициализирован, настройки чата сохранены в базе данных\n" +
+                "timeout = " + settings.getReplyDuration().getSeconds() + " секунд\n" +
+                "stickerpacks = " + settings.getStickerSetNames().toString());
+        try {
+            absSender.execute(builder.build());
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
 }
