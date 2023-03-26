@@ -15,47 +15,47 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
  **/
 public abstract class BaseBotException extends RuntimeException {
 
-   protected static final String ERROR_PREFIX = "*Произошла ошибка\\!*\n";
+    protected static final String ERROR_PREFIX = "*Произошла ошибка\\!*\n";
 
-   private final boolean isReplyNeeded;
-   private final Chat chat;
-   private final SendMessage.SendMessageBuilder replyBuilder;
+    private final boolean isReplyNeeded;
+    private final Chat chat;
+    private final SendMessage.SendMessageBuilder replyBuilder;
 
-   public BaseBotException(Chat chat, boolean isReplyNeeded) {
-      super();
-      this.isReplyNeeded = isReplyNeeded;
-      this.chat = chat;
-      this.replyBuilder = SendMessage.builder()
-              .parseMode(ParseMode.MARKDOWNV2)
-              .chatId(this.chat.getId().toString());
-   }
+    public BaseBotException(Chat chat, boolean isReplyNeeded) {
+        super();
+        this.isReplyNeeded = isReplyNeeded;
+        this.chat = chat;
+        this.replyBuilder = SendMessage.builder()
+                .parseMode(ParseMode.MARKDOWNV2)
+                .chatId(this.chat.getId().toString());
+    }
 
-   public BaseBotException(Chat chat, boolean isReplyNeeded, Throwable cause) {
-      super(cause);
-      this.isReplyNeeded = isReplyNeeded;
-      this.chat = chat;
-      this.replyBuilder = SendMessage.builder()
-              .parseMode(ParseMode.MARKDOWNV2)
-              .chatId(this.chat.getId().toString());
-   }
+    public BaseBotException(Chat chat, boolean isReplyNeeded, Throwable cause) {
+        super(cause);
+        this.isReplyNeeded = isReplyNeeded;
+        this.chat = chat;
+        this.replyBuilder = SendMessage.builder()
+                .parseMode(ParseMode.MARKDOWNV2)
+                .chatId(this.chat.getId().toString());
+    }
 
-   public boolean isReplyNeeded() {
-      return isReplyNeeded;
-   }
+    public boolean isReplyNeeded() {
+        return isReplyNeeded;
+    }
 
-   public void sendReplyMessageIfNeeded(AbsSender absSender) {
-      if (this.isReplyNeeded) {
-         try {
-            absSender.execute(getReplyMessage());
-         } catch (TelegramApiException e) {
-            throw new RuntimeException(e);
-         }
-      }
-   }
+    public void sendReplyMessageIfNeeded(AbsSender absSender) {
+        if (this.isReplyNeeded) {
+            try {
+                absSender.execute(getReplyMessage());
+            } catch (TelegramApiException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 
-   protected SendMessage.SendMessageBuilder getBuilder() {
-      return this.replyBuilder;
-   }
+    protected SendMessage.SendMessageBuilder getBuilder() {
+        return this.replyBuilder;
+    }
 
-   protected abstract SendMessage getReplyMessage();
+    protected abstract SendMessage getReplyMessage();
 }
