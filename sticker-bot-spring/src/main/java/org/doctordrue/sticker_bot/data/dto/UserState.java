@@ -1,4 +1,4 @@
-package org.doctordrue.sticker_bot.controllers.processors.stickers;
+package org.doctordrue.sticker_bot.data.dto;
 
 import java.time.Instant;
 

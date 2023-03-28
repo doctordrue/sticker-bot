@@ -1,6 +1,6 @@
 package org.doctordrue.sticker_bot.services;
 
-import org.doctordrue.sticker_bot.controllers.processors.stickers.UserState;
+import org.doctordrue.sticker_bot.data.dto.UserState;
 import org.doctordrue.sticker_bot.exceptions.user.UserTemporaryBlockedException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

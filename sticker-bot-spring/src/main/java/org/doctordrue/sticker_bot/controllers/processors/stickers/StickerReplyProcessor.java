@@ -1,6 +1,7 @@
 package org.doctordrue.sticker_bot.controllers.processors.stickers;
 
 import org.doctordrue.sticker_bot.controllers.processors.common.BaseUpdateProcessor;
+import org.doctordrue.sticker_bot.data.dto.UserState;
 import org.doctordrue.sticker_bot.data.entities.TelegramChatSettings;
 import org.doctordrue.sticker_bot.services.StickerPackService;
 import org.doctordrue.sticker_bot.services.TelegramChatService;
