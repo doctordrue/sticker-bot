@@ -46,7 +46,7 @@ public class StickerPackService {
                 .sticker(new InputFile(sticker.getFileId()))
                 .replyToMessageId(replyOnMessage == null ? null : replyOnMessage.getMessageId())
                 .build());
-        this.telegramChatService.updateLastStickerMessageId(chatId, message.getMessageId());
+        this.telegramChatService.updateLastStickerMessage(chatId, message);
     }
 
     public void sendSticker(AbsSender sender, Long chatId, Sticker sticker) throws TelegramApiException, InterruptedException {

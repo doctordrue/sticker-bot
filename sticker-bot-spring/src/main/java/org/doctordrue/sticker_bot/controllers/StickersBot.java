@@ -10,9 +10,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.helpCommand.HelpCommand;
+import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Andrey_Barantsev
@@ -43,6 +47,9 @@ public class StickersBot extends TelegramLongPollingCommandBot {
 
     @Autowired
     private RerollCommand rerollCommand;
+
+    @Autowired
+    private SetRerollTimeoutCommand setRerollTimeoutCommand;
 
     @Autowired
     private StickerReplyProcessor stickerReplyProcessor;
@@ -79,7 +86,22 @@ public class StickersBot extends TelegramLongPollingCommandBot {
         this.register(stickerPacksCommand);
         this.register(removeStickerPackCommand);
         this.register(rerollCommand);
+        this.register(setRerollTimeoutCommand);
         this.nonCommandProcessor.register(stickerReplyProcessor);
+
+        try {
+            this.execute(SetMyCommands.builder()
+                    .clearCommands()
+                    .commands(this.getRegisteredCommands().stream()
+                            .map(c -> BotCommand.builder()
+                                    .command(c.getCommandIdentifier())
+                                    .description(c.getDescription())
+                                    .build())
+                            .collect(Collectors.toList()))
+                    .build());
+        } catch (TelegramApiException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

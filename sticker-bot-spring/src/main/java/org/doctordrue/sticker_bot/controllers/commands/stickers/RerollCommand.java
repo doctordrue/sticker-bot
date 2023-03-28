@@ -41,6 +41,7 @@ public class RerollCommand extends BotCommand {
         if (stickerMessageId != null) {
             try {
                 absSender.execute(SendChatAction.builder().chatId(chat.getId()).action("typing").build());
+                this.telegramChatService.verifyCanRerollBy(message);
                 boolean isDeleted = absSender.execute(DeleteMessage.builder().chatId(chat.getId()).messageId(stickerMessageId).build());
                 if (isDeleted) {
                     // send new sticker
