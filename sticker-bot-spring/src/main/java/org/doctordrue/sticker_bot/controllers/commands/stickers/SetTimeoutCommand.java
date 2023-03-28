@@ -29,8 +29,8 @@ public class SetTimeoutCommand extends BotCommand {
         SendMessage.SendMessageBuilder builder = SendMessage.builder().chatId(chat.getId().toString());
         if (arguments.length == 0) {
             long timeoutSeconds = this.telegramChatService.getOrCreate(chat.getId()).getReplyDuration().getSeconds();
-            sb.append("Текущий таймаут ответа стикером:").append(timeoutSeconds)
-                    .append("\nЧто бы задать новый таймаут добавьте параметр таймаута в секундах.")
+            sb.append("Текущий таймаут ответа стикером: ").append(timeoutSeconds)
+                    .append("\nЧтобы задать новый таймаут, добавьте параметр таймаута в секундах.")
                     .append("\nПример (для установки таймаута 2 минуты): /timeout 120");
         } else {
             try {

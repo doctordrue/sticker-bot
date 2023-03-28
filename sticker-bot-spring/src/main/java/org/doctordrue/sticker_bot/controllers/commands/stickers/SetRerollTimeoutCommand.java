@@ -27,8 +27,8 @@ public class SetRerollTimeoutCommand extends BotCommand {
         SendMessage.SendMessageBuilder builder = SendMessage.builder().chatId(chat.getId().toString());
         if (arguments.length == 0) {
             long timeoutSeconds = this.telegramChatService.getOrCreate(chat.getId()).getRerollDuration().getSeconds();
-            sb.append("Текущий таймаут для команды /reroll:").append(timeoutSeconds)
-                    .append("\nЧто бы задать новый таймаут добавьте параметр таймаута в секундах.")
+            sb.append("Текущий таймаут для команды /reroll: ").append(timeoutSeconds)
+                    .append("\nЧтобы задать новый таймаут, добавьте параметр таймаута в секундах.")
                     .append("\nПример (для установки таймаута 2 минуты): /reroll_timeout 120");
         } else {
             try {
