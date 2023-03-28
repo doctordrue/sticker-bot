@@ -82,7 +82,7 @@ public class TelegramChatService {
         final LocalDateTime commandTimestamp = LocalDateTime.ofInstant(Instant.ofEpochSecond(rerollCommandMessage.getDate()), ZoneId.systemDefault());
 
         if (lastStickerTimestamp != null && lastStickerTimestamp.plus(settings.getRerollDuration()).isBefore(commandTimestamp)) {
-            throw new UnableToRerollException(rerollCommandMessage);
+            throw new UnableToRerollException(rerollCommandMessage, settings.getRerollDuration(), Duration.between(lastStickerTimestamp, commandTimestamp));
         }
     }
 
