@@ -37,12 +37,20 @@ public class StickerPackService {
         return stickerSet.getStickers().get(ThreadLocalRandom.current().nextInt(stickerSet.getStickers().size()));
     }
 
-    public void sendSticker(AbsSender sender, Long chatId, Sticker sticker) throws TelegramApiException, InterruptedException {
+    public void sendSticker(AbsSender sender, Long chatId, Sticker sticker, Message replyOnMessage) throws TelegramApiException, InterruptedException {
         sender.execute(SendChatAction.builder().chatId(chatId.toString()).action("choose_sticker").build());
         long randomMillis = ThreadLocalRandom.current().nextLong(MIN_STICKER_CHOOSING_TIME_SECONDS * 1000, MAX_STICKER_CHOOSING_TIME_SECONDS * 1000);
         Thread.sleep(randomMillis);
-        Message message = sender.execute(SendSticker.builder().chatId(chatId.toString()).sticker(new InputFile(sticker.getFileId())).build());
+        Message message = sender.execute(SendSticker.builder()
+                .chatId(chatId.toString())
+                .sticker(new InputFile(sticker.getFileId()))
+                .replyToMessageId(replyOnMessage == null ? null : replyOnMessage.getMessageId())
+                .build());
         this.telegramChatService.updateLastStickerMessageId(chatId, message.getMessageId());
+    }
+
+    public void sendSticker(AbsSender sender, Long chatId, Sticker sticker) throws TelegramApiException, InterruptedException {
+        this.sendSticker(sender, chatId, sticker, null);
     }
 
 }
