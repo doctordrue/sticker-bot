@@ -21,7 +21,7 @@ public class UnableToRerollException extends BaseBotException {
     @Override
     protected SendMessage getReplyMessage() {
         return getBuilder()
-                .text("Невозможно обновить последний стикер. Таймаут обновления " + this.timeoutSet.getSeconds() + " секунд. Прошло: " + this.timePassed.getSeconds() + " секунд")
+                .text("Невозможно обновить последний стикер\\. Таймаут обновления " + this.timeoutSet.getSeconds() + " секунд\\. Прошло " + this.timePassed.getSeconds() + " секунд")
                 .disableNotification(true)
                 .replyToMessageId(causeMessage.getMessageId())
                 .build();
