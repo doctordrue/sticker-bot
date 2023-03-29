@@ -24,6 +24,9 @@ public class TelegramChatService {
     @Autowired
     private TelegramChatSettingsRepository telegramChatSettingsRepository;
 
+    @Autowired
+    private ValidationService validationService;
+
     public TelegramChatSettings getOrCreate(Long chatId) {
         return this.telegramChatSettingsRepository.findById(chatId)
                 .orElseGet(() -> this.telegramChatSettingsRepository.save(TelegramChatSettings.createDefault(chatId)));
@@ -58,12 +61,14 @@ public class TelegramChatService {
     }
 
     public TelegramChatSettings setReplyDuration(Long chatId, Long timeoutSeconds) {
+        this.validationService.verifyTimeout(chatId, timeoutSeconds, 0L, Long.MAX_VALUE);
         TelegramChatSettings settings = this.getOrCreate(chatId);
         settings.setReplyDuration(Duration.ofSeconds(timeoutSeconds).abs());
         return this.telegramChatSettingsRepository.save(settings);
     }
 
     public TelegramChatSettings setRerollDuration(Long chatId, Long timeoutSeconds) {
+        this.validationService.verifyTimeout(chatId, timeoutSeconds, 0L, 300L);
         TelegramChatSettings settings = this.getOrCreate(chatId);
         settings.setRerollDuration(Duration.ofSeconds(timeoutSeconds));
         return this.telegramChatSettingsRepository.save(settings);

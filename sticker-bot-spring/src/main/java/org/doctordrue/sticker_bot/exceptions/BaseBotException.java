@@ -18,25 +18,34 @@ public abstract class BaseBotException extends RuntimeException {
     protected static final String ERROR_PREFIX = "*Произошла ошибка\\!*\n";
 
     private final boolean isReplyNeeded;
-    private final Chat chat;
+    private final Long chatId;
     private final SendMessage.SendMessageBuilder replyBuilder;
 
-    public BaseBotException(Chat chat, boolean isReplyNeeded) {
+    public BaseBotException(Long chatId, boolean isReplyNeeded) {
         super();
         this.isReplyNeeded = isReplyNeeded;
-        this.chat = chat;
+        this.chatId = chatId;
         this.replyBuilder = SendMessage.builder()
                 .parseMode(ParseMode.MARKDOWNV2)
-                .chatId(this.chat.getId().toString());
+                .chatId(this.chatId);
+    }
+
+    public BaseBotException(Long chatId, boolean isReplyNeeded, Throwable cause) {
+        super(cause);
+        this.isReplyNeeded = isReplyNeeded;
+        this.chatId = chatId;
+        this.replyBuilder = SendMessage.builder()
+                .parseMode(ParseMode.MARKDOWNV2)
+                .chatId(this.chatId);
+    }
+
+
+    public BaseBotException(Chat chat, boolean isReplyNeeded) {
+        this(chat.getId(), isReplyNeeded);
     }
 
     public BaseBotException(Chat chat, boolean isReplyNeeded, Throwable cause) {
-        super(cause);
-        this.isReplyNeeded = isReplyNeeded;
-        this.chat = chat;
-        this.replyBuilder = SendMessage.builder()
-                .parseMode(ParseMode.MARKDOWNV2)
-                .chatId(this.chat.getId().toString());
+        this(chat.getId(), isReplyNeeded, cause);
     }
 
     public boolean isReplyNeeded() {
