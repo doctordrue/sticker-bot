@@ -1,6 +1,7 @@
 package org.doctordrue.sticker_bot.exceptions.reroll;
 
 import org.doctordrue.sticker_bot.exceptions.BaseBotException;
+import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -21,6 +22,7 @@ public class UnableToRerollException extends BaseBotException {
     @Override
     protected SendMessage getReplyMessage() {
         return getBuilder()
+                .parseMode(ParseMode.HTML)
                 .text("Невозможно обновить последний стикер\\. Таймаут обновления " + this.timeoutSet.getSeconds() + " секунд\\. Прошло " + this.timePassed.getSeconds() + " секунд")
                 .disableNotification(true)
                 .replyToMessageId(causeMessage.getMessageId())
